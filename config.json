@@ -1,0 +1,22 @@
+{
+    "data_directory"        : "../data",
+    "derivatives_directory" : "../data/derivatives",
+
+    "LuCiD_factors" : {
+        "insight"      : [1,3,8,9,16,19],
+        "control"      : [4,6,10,14,23],
+        "thought"      : [5,12,22],
+        "realism"      : [7,17,20],
+        "memory"       : [2,13,18,24],
+        "dissociation" : [11,15,21],
+        "neg_emotion"  : [26,28],
+        "pos_emotion"  : [25,27]
+    },
+
+    "colors" : {
+        "trait" :"gainsboro",
+        "non-lucid"  : "lightsteelblue",
+        "semi-lucid" : "cornflowerblue",
+        "lucid"      : "royalblue"
+    }
+}
