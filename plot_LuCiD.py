@@ -47,7 +47,7 @@ trait_LuCiD = pd.read_csv(LuCiD_fname,sep='\t',index_col='participant_id')
 
 # get the state LuCiDs (ie, corresponding to individual dream reports)
 state_LuCiDs = {}
-for sub, visit in participants_df['resinstatement'].items():
+for sub, visit in participants_df['reinstatement'].items():
     if visit != 'False':
         basename = f'{sub}_ses-home_report-red.json'
         report_fname = path.join(data_dir,sub,basename)
@@ -212,7 +212,7 @@ for sub, subdf in df.groupby('participant_id'):
     _, ax = plt.subplots(figsize=(7,3))
 
     xbase = pd.np.arange(len(columns))
-    visit = participants_df.loc[sub,'resinstatement']
+    visit = participants_df.loc[sub,'reinstatement']
 
     for survey, row in subdf.groupby('survey'):
         y = row[list(columns)].values.flatten()
