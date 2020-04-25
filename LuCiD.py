@@ -1,12 +1,14 @@
 """
-Plot LuCiD scales -- both state and trait next to each other.
+Analyze LuCiD scales -- both state and trait next to each other.
 
 - single plot per participant (that completed the task)
 - one group plot of just the trait LuCiD
+- output dataframe with descriptives and stats for trait
 """
 from os import path
 from json import load
 
+import numpy as np
 import pandas as pd
 
 from scipy.stats import wilcoxon
@@ -62,7 +64,7 @@ state_LuCiD = pd.DataFrame.from_dict(state_LuCiDs,
         orient='index',
         dtype=float,
         columns=[ f'LuCiD_{i+1}' for i in range(28) ]
-    ).replace({'N/A':pd.np.nan,'NaN':pd.np.nan})
+    ).replace({'N/A':np.nan,'NaN':np.nan})
 state_LuCiD.index.name = 'participant_id'
 
 
@@ -124,7 +126,10 @@ stats = { col: wilcoxon(trait_LuCiD[col].values - 2.5)
     for col in ascending_cols }
 stats = pd.DataFrame.from_dict(stats,columns=['wilcoxon_stat','pval_2tailed'],orient='index')
 export_stats_fname = path.join(deriv_dir,f'LuCiD-trait.tsv')
-stats.to_csv(export_stats_fname,index=True,index_label='factor',float_format='%.05f',sep='\t')
+
+# add the descriptives to stats output
+out_df = pd.concat([stats,trait_summary.T],axis=1,ignore_index=False)
+out_df.to_csv(export_stats_fname,index=True,index_label='factor',float_format='%.05f',sep='\t')
 
 
 _, ax = plt.subplots(figsize=(11,6))
@@ -145,7 +150,7 @@ VIOLIN_COLOR = colors['trait']
 #     edgecolor='k',alpha=1)
 
 # xpos = x
-boxpos = pd.np.array(x) - .25
+boxpos = np.array(x) - .25
 BOXWIDTH = .2
 LINEWIDTH = .5
 ax.boxplot(boxdata,positions=boxpos,widths=BOXWIDTH,
@@ -211,7 +216,7 @@ for sub, subdf in df.groupby('participant_id'):
 
     _, ax = plt.subplots(figsize=(7,3))
 
-    xbase = pd.np.arange(len(columns))
+    xbase = np.arange(len(columns))
     visit = participants_df.loc[sub,'reinstatement']
 
     for survey, row in subdf.groupby('survey'):
