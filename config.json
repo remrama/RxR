@@ -15,8 +15,6 @@
 
     "colors" : {
         "trait" :"gainsboro",
-        "non-lucid"  : "lightsteelblue",
-        "semi-lucid" : "cornflowerblue",
-        "lucid"      : "royalblue"
+        "state" : "cornflowerblue"
     }
 }

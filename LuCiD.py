@@ -222,11 +222,8 @@ for sub, subdf in df.groupby('participant_id'):
     for survey, row in subdf.groupby('survey'):
         y = row[list(columns)].values.flatten()
         x = xbase + dodge*(1 if survey == 'state' else -1)
-        if survey == 'state':
-            c = colors[visit]
-        else:
-            c = colors[survey]
-        ax.bar(x,y,color=c,width=WIDTH)
+        c = colors[survey]
+        ax.bar(x,y,color=c,width=WIDTH,label=f'{survey} lucidity')
 
     ax.set_xticks(range(len(columns)))
     xticklabels = [ x.replace('_',' ') for x in columns ]
@@ -242,9 +239,14 @@ for sub, subdf in df.groupby('participant_id'):
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1],labels[::-1],frameon=False,
+              loc='upper left',bbox_to_anchor=(.96,1.05))
 
     plt.tight_layout()
 
     export_plot_fname = path.join(deriv_dir,'LuCiDs',f'LuCiD-{sub}.svg')
     plt.savefig(export_plot_fname)
+    plt.savefig(export_plot_fname.replace('.svg','.eps'))
     plt.close()
