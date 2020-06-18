@@ -25,8 +25,6 @@ rcParams['ytick.labelsize'] = 'x-large'
 rcParams['xtick.major.size'] = 5
 rcParams['ytick.major.size'] = 5
 rcParams['ytick.minor.size'] = 3
-# rcParams['legend.fontsize'] = 'small'
-# rcParams['legend.title_fontsize'] = 'medium'
 rcParams['savefig.dpi'] = 300
 rcParams['svg.fonttype'] = 'none'
 
@@ -81,37 +79,11 @@ for factor, values in LuCiD_factors.items():
     df.loc[(participants,'state'),factor] = state_LuCiD.loc[participants,factor_cols].mean(axis=1).values
     df.loc[(participants,'trait'),factor] = trait_LuCiD.loc[participants,factor_cols].mean(axis=1).values
     
-    ##### TEMP??
     # also add to trait df for group plot
     trait_LuCiD[factor] = trait_LuCiD[factor_cols].mean(axis=1)
-# #     # state_LuCiD[f'state_{factor}'] = state_LuCiD[factor_cols].mean(axis=1)
-# df.reset_index(drop=False,inplace=True)
-# # # combine both dataframes
-# # df = pd.concat([trait_LuCiD,state_LuCiD],axis='columns',sort=True
-# #     ).reset_index(drop=False
-# #     ).rename(columns={'index':'participant_id'})
-# # value_cols = [ col for col in df.columns if 
-# #     'state' in col or 'trait' in col ]
-# # id_cols = ['participant_id']
-# df = pd.melt(df,id_vars=['participant_id','survey'],
-#     value_vars=LuCiD_factors.keys(),
-#     var_name='factor',value_name='likert')
-# #     ).dropna()
-# # df['survey'] = df['factor'].apply(lambda x: x.split('_')[0])
-# # df['factor'] = df['factor'].apply(lambda x: x.split('_')[1])
-
-# ###### plot
-
-# sea.catplot(data=df,x='factor',hue='survey',y='likert',col='participant_id',
-#     kind='bar',col_wrap=3,hue_order=['trait','state'],
-#     palette={'trait':'gainsboro','state':'royalblue'})
 
 
 ######## plot group trait
-
-# trait_summary = df.loc[(slice(None),'trait'),columns].astype(float
-#     ).groupby('survey'
-#     ).agg(['mean','sem'])
 
 trait_summary = trait_LuCiD[columns].agg(['mean','sem'])
 
@@ -141,13 +113,8 @@ yerr = trait_summary.loc['sem',ascending_cols].values
 ax.bar(x,y,color=colors['trait'],width=.8,zorder=0,alpha=1)
 ax.errorbar(x,y,yerr,fmt='none',linewidth=1,color='k',capthick=1)
 
-# boxes or violins
+# boxes
 boxdata = trait_LuCiD[ascending_cols].values
-WIDTHS = .6
-VIOLIN_COLOR = colors['trait']
-# violins = ax.violinplot(boxdata,positions=x,widths=WIDTHS,showextrema=False)
-# plt.setp(violins['bodies'],facecolor=VIOLIN_COLOR,
-#     edgecolor='k',alpha=1)
 
 # xpos = x
 boxpos = np.array(x) - .25
@@ -162,12 +129,6 @@ ax.boxplot(boxdata,positions=boxpos,widths=BOXWIDTH,
                     markerfacecolor='k',
                     markeredgecolor='none'))
 
-# # overlap individuals (for now)
-# for sub, row in trait_LuCiD.iterrows():
-#     y = row[ascending_cols].values
-#     visit = participants_df.loc[sub,'visit']
-#     c = colors[visit] if visit!='False' else 'gray'
-#     ax.plot(x,y,linestyle='-',linewidth=.8,color=c,marker='.')
 
 # significance markers
 alpha_cutoff = .05
@@ -234,8 +195,6 @@ for sub, subdf in df.groupby('participant_id'):
     yticklabels = ['Strongly\ndisagree','Strongly\nagree']
     ax.set_yticklabels(yticklabels)
     ax.set_ylim(0,5)
-
-    # ax.axhline(2.5,color='k',linestyle='--',linewidth=.5,zorder=0)
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)

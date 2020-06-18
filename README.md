@@ -1,3 +1,3 @@
 ## RxR
 
-Analysis code for **Reinstatement of real-world scene memories while (lucid) dreaming to change the dream environment.**
+Analysis code for [Partial memory reinstatement while (lucid) dreaming to change the dream environment](https://doi.org/10.​1016/​j.​concog.​2020.​102974).
